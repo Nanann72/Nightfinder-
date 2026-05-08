@@ -1,0 +1,138 @@
+{
+  "summary": "Iteration 15 - Extended i18n Testing Complete. Tested Landing, CreatorsList, Wallet, Subscriptions, CamRoom, Messages, Feed pages across 6 languages (FR, EN, ES, DE, IT, PT). Language switcher works correctly. Most newly translated pages display correctly. Found some hardcoded French strings in Wallet page and Messages page that need wrapping with t().",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "Landing FAQ",
+        "issues": ["FAQ section shows French content from /api/site-config instead of translated fallback when config.faq exists. The fallbackFaq with t() translations is only used when config?.faq is empty."]
+      },
+      {
+        "screen": "Wallet page",
+        "issues": [
+          "Hardcoded French: 'DÉPENSÉ (VIE)' and 'GAGNÉ (VIE)' labels",
+          "Hardcoded French: 'Gagne 100 coins par ami·e parrainé·e' referral CTA",
+          "Hardcoded French: 'Recharger tes coins' section title",
+          "Hardcoded French: 'Acheter · X €' pack buttons",
+          "Hardcoded French: 'Historique récent' section title",
+          "Hardcoded French: Various card/auto-reload section labels"
+        ]
+      },
+      {
+        "screen": "Messages page",
+        "issues": ["Hardcoded French: 'Sélectionne une conversation à gauche.' in no-active-thread state"]
+      },
+      {
+        "screen": "HlsPlayer component",
+        "issues": ["Error messages 'Lecteur non supporté' and codec error body are hardcoded in French"]
+      },
+      {
+        "screen": "Footer (all pages)",
+        "issues": ["Footer remains in French - acceptable per iteration scope, not a regression"]
+      },
+      {
+        "screen": "Creator cards",
+        "issues": ["'CRÉATRICE VÉRIFIÉE' badge text comes from backend/component, not translated"]
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/test_reports/iteration_15.json"
+  ],
+  "action_items": [
+    "Wallet.jsx: Wrap remaining hardcoded French strings with t() - referral CTA, pack section title, buy buttons, history title, stats labels",
+    "Messages.jsx: Wrap 'Sélectionne une conversation à gauche.' with t('messages.no_selection')",
+    "HlsPlayer.jsx: Add i18n support for error messages (cam.codec_title, cam.codec_body)",
+    "Landing.jsx: Consider always using fallbackFaq with translations instead of config.faq, or translate config.faq on backend"
+  ],
+  "critical_code_review_comments": [
+    "i18n infrastructure working correctly with i18next + react-i18next",
+    "Language switcher persists selection to localStorage correctly",
+    "All 6 locale files have ~250 keys each with proper translations",
+    "Most page headers and main content properly wrapped with t()",
+    "Some secondary UI elements in Wallet.jsx still have hardcoded French strings",
+    "Footer component not in scope for this iteration (acceptable)",
+    "data-testid attributes preserved across all language switches"
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (frontend-only testing)",
+    "frontend": "85% (main content translated, some secondary elements still in French)"
+  },
+  "test_credentials": {
+    "fan_account": "fan@meandyou.fans / TestFan2026!"
+  },
+  "seed_data_creation": "None",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "i18n extended to Landing, CreatorsList, Wallet (partial), Subscriptions, CamRoom, Messages, Feed pages. Wallet.jsx has the most remaining hardcoded French strings. Footer component remains in French (acceptable). HlsPlayer error messages need i18n. Language switcher works correctly with all 6 languages.",
+  "tests_executed": {
+    "landing_page_english": {
+      "hero_eyebrow": "PASSED - 'Exclusive platform · +18'",
+      "hero_headline": "PASSED - 'Access the exclusive content of your favorite creators.'",
+      "hero_cta": "PASSED - 'Join me&you'",
+      "trust_badges": "PASSED - 'AI verification / Stripe payments / 100% private'",
+      "trending_section": "PASSED - 'TRENDING / Popular creators / See all'",
+      "how_it_works": "PASSED - 'How it works / Discover, subscribe, interact'",
+      "creator_cta": "PASSED - 'Become a creator'",
+      "faq_section": "FAILED - Shows French from site-config API",
+      "final_cta": "PASSED - 'Ready to start? / Get started'"
+    },
+    "creators_list_page": {
+      "english": "PASSED - 'EXPLORE / All creators / Search a creator... / Trending / New'",
+      "german": "PASSED - 'ENTDECKEN / Alle Creator / Creator suchen... / Beliebt / Neu'"
+    },
+    "wallet_page": {
+      "header_section": "PASSED - 'WALLET / Your coins / me&you coins let you subscribe...'",
+      "balance_card": "PASSED - 'MY BALANCE'",
+      "stats_labels": "FAILED - 'DÉPENSÉ (VIE)' and 'GAGNÉ (VIE)' still in French",
+      "referral_cta": "FAILED - 'Gagne 100 coins par ami·e parrainé·e' still in French",
+      "packs_section": "FAILED - 'Recharger tes coins' and 'Acheter' buttons still in French"
+    },
+    "subscriptions_page": {
+      "all_elements": "PASSED - 'MY ACCOUNT / My subscriptions / Manage auto-renewal / Active (0) / You have no active subscriptions yet. Explore creators'"
+    },
+    "cam_room_page": {
+      "back_button": "PASSED - 'Back to lives'",
+      "side_panel_eyebrow": "PASSED - 'LIVE RIGHT NOW'",
+      "viewers": "PASSED - '2,443 viewers'",
+      "languages_label": "PASSED - 'Languages'",
+      "respectful_note": "PASSED - 'This live is streamed in real time...'",
+      "favorite_button": "PASSED - 'Add to favorites'",
+      "hls_error": "FAILED - 'Lecteur non supporté' still in French"
+    },
+    "messages_page": {
+      "title": "PASSED - 'Private messages'",
+      "search_placeholder": "PASSED - 'Search a conversation...'",
+      "empty_threads": "PASSED - 'No conversation yet. Subscribe to a creator to start chatting.'",
+      "no_active_thread": "FAILED - 'Sélectionne une conversation à gauche.' still in French"
+    },
+    "feed_page": {
+      "heading": "PASSED - 'The me&you feed'",
+      "subtitle": "PASSED - 'Live stories and the latest posts.'",
+      "empty_story": "PASSED - 'No active story right now.'"
+    },
+    "language_switcher": {
+      "menu_opens": "PASSED",
+      "all_6_options": "PASSED - FR/EN/ES/DE/IT/PT with correct flags",
+      "spanish_switch": "PASSED - 'Plataforma exclusiva · +18'",
+      "italian_switch": "PASSED - 'Piattaforma esclusiva · +18'",
+      "portuguese_switch": "PASSED - 'Plataforma exclusiva · +18'"
+    },
+    "data_testid_preservation": {
+      "feed_page": "PASSED - 14 data-testid elements found"
+    },
+    "console_errors": {
+      "js_errors": "NONE - Only 401 errors for unauthenticated API calls (expected)"
+    }
+  },
+  "mocked_apis": {
+    "has_mocked_apis": false,
+    "mocked_apis_list": []
+  }
+}

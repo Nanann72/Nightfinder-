@@ -1,0 +1,147 @@
+{
+  "summary": "Iteration 42 - Fan Profile Editor + Creator Stripchat-style Fields + Admin Broadcast. All 21 backend tests PASSED. Frontend UI verified: Account page with name/username/bio inputs, avatar upload, notification toggle, locked username badge. Dashboard Edit Profile modal with Stripchat-style sections (À propos de moi, Tarifs en live, Réseaux sociaux). Admin Broadcast page with 5 segment buttons, live count, subject/body inputs, test/send buttons, history column.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_iter42_fan_profile_broadcast.py",
+    "/app/test_reports/pytest/pytest_results_iter42.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "BACKEND: PATCH /api/users/me - VERIFIED: Fresh fan can set username once, sets username_changed=true",
+    "BACKEND: PATCH /api/users/me - VERIFIED: Second username change blocked with 400 'Tu as déjà modifié ton nom d'utilisateur'",
+    "BACKEND: PATCH /api/users/me - VERIFIED: name/bio/avatar_url/email_notifications_enabled always editable",
+    "BACKEND: GET /api/users/me/subscriptions - VERIFIED: Returns array with subscription_id, creator_id, since, renew_at, auto_renew, creator object",
+    "BACKEND: DELETE /api/subscriptions/{creator_id} - VERIFIED: Returns 404 for non-existent subscription (hard-cancel works)",
+    "BACKEND: PATCH /api/creators/me - VERIFIED: Accepts Stripchat-style fields (about_me, languages, body_type, ethnicity, hair_color, eye_color, sub_culture, price_*, social_*)",
+    "BACKEND: GET /api/creators/{id} - VERIFIED: Returns all extended profile fields",
+    "BACKEND: GET /api/admin/users?segment=inactive_30d|active_subscribers|top_creators - VERIFIED: All segments return filtered lists",
+    "BACKEND: GET /api/admin/broadcast/preview - VERIFIED: Returns {segment, count} for all 5 segments (all, fans, creators, active_subscribers, inactive_30d)",
+    "BACKEND: POST /api/admin/broadcast/send with test_email - VERIFIED: Returns {ok:true, sent:1, mode:'test'}",
+    "BACKEND: POST /api/admin/broadcast/send without test_email - VERIFIED: Returns {ok:true, broadcast_id, queued:N, mode:'broadcast'}",
+    "BACKEND: GET /api/admin/broadcasts - VERIFIED: Returns list of past broadcasts with proper structure",
+    "BACKEND: Non-admin access - VERIFIED: All /admin/broadcast/* endpoints return 403 for non-admin users",
+    "FRONTEND: /account - VERIFIED: Name input, username input (disabled when locked), bio textarea, avatar upload, notification toggle, 'Verrouillé' badge, quick-links to /subscriptions and /wallet",
+    "FRONTEND: /dashboard Edit Profile modal - VERIFIED: Contains 'À propos de moi' section with textarea + 6 selectors (body_type, ethnicity, hair_color, eye_color, sub_culture, languages)",
+    "FRONTEND: /dashboard Edit Profile modal - VERIFIED: Contains 'Tarifs en live' section with 5 number inputs (private, exclusive, spy, group, ticket)",
+    "FRONTEND: /dashboard Edit Profile modal - VERIFIED: Contains 'Réseaux sociaux' section with 4 URL inputs (Instagram, Twitter, TikTok, YouTube)",
+    "FRONTEND: /admin/broadcast - VERIFIED: 5 segment buttons with live count, opt-in checkbox, subject + body textareas, CTA text/URL inputs, 'Envoyer un test' + 'Envoyer à N destinataires' buttons, history column"
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iter42_fan_profile_broadcast.py"
+  ],
+  "success_rate": {
+    "backend": "100% (21/21 tests passed)",
+    "frontend": "100% (all UI elements verified)"
+  },
+  "test_credentials": {
+    "admin": "admin@meandyou.fans / Admin2026!",
+    "fan": "fan@meandyou.fans / TestFan2026!"
+  },
+  "seed_data_creation": "Created fresh fan account for one-time username test (test_fresh_fan_*@meandyou.fans)",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Iteration 42 completed successfully. Fan profile editor at /account allows one-time username change (username_changed flag enforced). Creator profile extended with Stripchat-style fields (about_me, languages, body_type, ethnicity, hair_color, eye_color, sub_culture, live pricing, social links). Admin broadcast tool at /admin/broadcast supports 5 segments with live count preview, test mode, and broadcast mode with background sender.",
+  "tests_executed": {
+    "backend": {
+      "TestUserSelfUpdate": {
+        "test_fresh_fan_can_set_username_once": "PASSED",
+        "test_fresh_fan_cannot_change_username_twice": "PASSED",
+        "test_name_bio_avatar_always_editable": "PASSED"
+      },
+      "TestUserSubscriptions": {
+        "test_get_my_subscriptions": "PASSED",
+        "test_delete_subscription_not_found": "PASSED"
+      },
+      "TestCreatorProfileExtended": {
+        "test_patch_creator_stripchat_fields": "PASSED",
+        "test_get_creator_returns_extended_fields": "PASSED"
+      },
+      "TestAdminUsersSegment": {
+        "test_admin_users_inactive_30d": "PASSED",
+        "test_admin_users_active_subscribers": "PASSED",
+        "test_admin_users_top_creators": "PASSED"
+      },
+      "TestAdminBroadcast": {
+        "test_broadcast_preview_all": "PASSED (count=62)",
+        "test_broadcast_preview_fans": "PASSED (count=52)",
+        "test_broadcast_preview_creators": "PASSED (count=10)",
+        "test_broadcast_preview_active_subscribers": "PASSED",
+        "test_broadcast_preview_inactive_30d": "PASSED",
+        "test_broadcast_send_test_mode": "PASSED",
+        "test_broadcast_send_broadcast_mode": "PASSED",
+        "test_broadcasts_list": "PASSED"
+      },
+      "TestNonAdminBroadcastAccess": {
+        "test_broadcast_preview_requires_admin": "PASSED (403)",
+        "test_broadcast_send_requires_admin": "PASSED (403)",
+        "test_broadcasts_list_requires_admin": "PASSED (403)"
+      }
+    },
+    "frontend": {
+      "account_page": {
+        "name_input": "PASSED - data-testid=account-name-input",
+        "username_input": "PASSED - data-testid=account-username-input (disabled when locked)",
+        "bio_input": "PASSED - data-testid=account-bio-input",
+        "notification_toggle": "PASSED - data-testid=account-notif-toggle",
+        "save_button": "PASSED - data-testid=account-save-btn",
+        "link_to_subscriptions": "PASSED - data-testid=account-link-subs",
+        "link_to_wallet": "PASSED - data-testid=account-link-wallet",
+        "locked_badge": "PASSED - 'Verrouillé' badge visible when username_changed=true"
+      },
+      "dashboard_edit_profile_modal": {
+        "about_me_textarea": "PASSED - data-testid=edit-about-me",
+        "body_type_selector": "PASSED - data-testid=edit-body-type",
+        "ethnicity_selector": "PASSED - data-testid=edit-ethnicity",
+        "hair_color_selector": "PASSED - data-testid=edit-hair-color",
+        "eye_color_selector": "PASSED - data-testid=edit-eye-color",
+        "sub_culture_selector": "PASSED - data-testid=edit-sub-culture",
+        "languages_input": "PASSED - data-testid=edit-languages",
+        "price_private": "PASSED - data-testid=edit-price-private",
+        "price_exclusive": "PASSED - data-testid=edit-price-exclusive",
+        "price_spy": "PASSED - data-testid=edit-price-spy",
+        "price_group": "PASSED - data-testid=edit-price-group",
+        "price_ticket": "PASSED - data-testid=edit-price-ticket",
+        "social_instagram": "PASSED - data-testid=edit-social_instagram",
+        "social_twitter": "PASSED - data-testid=edit-social_twitter",
+        "social_tiktok": "PASSED - data-testid=edit-social_tiktok",
+        "social_youtube": "PASSED - data-testid=edit-social_youtube"
+      },
+      "admin_broadcast_page": {
+        "broadcast_container": "PASSED - data-testid=admin-broadcast",
+        "segment_all": "PASSED - data-testid=broadcast-seg-all",
+        "segment_fans": "PASSED - data-testid=broadcast-seg-fans",
+        "segment_creators": "PASSED - data-testid=broadcast-seg-creators",
+        "segment_active_subscribers": "PASSED - data-testid=broadcast-seg-active_subscribers",
+        "segment_inactive_30d": "PASSED - data-testid=broadcast-seg-inactive_30d",
+        "opted_in_checkbox": "PASSED - data-testid=broadcast-opted-in",
+        "count_display": "PASSED - data-testid=broadcast-count (shows live count)",
+        "subject_input": "PASSED - data-testid=broadcast-subject",
+        "body_textarea": "PASSED - data-testid=broadcast-body",
+        "cta_text_input": "PASSED - data-testid=broadcast-cta-text",
+        "cta_url_input": "PASSED - data-testid=broadcast-cta-url",
+        "test_email_input": "PASSED - data-testid=broadcast-test-email",
+        "send_test_button": "PASSED - data-testid=broadcast-send-test",
+        "send_all_button": "PASSED - data-testid=broadcast-send-all",
+        "history_items": "PASSED - 1 broadcast in history"
+      }
+    }
+  },
+  "mocked_apis": {
+    "has_mocked_apis": false,
+    "mocked_apis_list": []
+  },
+  "notes": {
+    "username_one_time_change": "Username can only be changed once per account. Server enforces via username_changed flag. UI shows 'Verrouillé' badge and disables input after first change.",
+    "stripchat_fields": "Extended creator profile with about_me (max 2000 chars), languages (max 10), body_type, ethnicity, hair_color, eye_color, sub_culture, live pricing (coins/min), and social links.",
+    "admin_broadcast": "Mass email tool supports 5 segments (all, fans, creators, active_subscribers, inactive_30d). Test mode sends to single email, broadcast mode queues background sender. RGPD compliant with opt-in filter.",
+    "email_sending": "Email sending may fail silently if Resend/SMTP not configured, but API returns success. Test mode returns ok=true even if email fails to send."
+  }
+}

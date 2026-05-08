@@ -1,0 +1,112 @@
+{
+  "summary": "Backend testing completed for me&you iteration 5 - Coin Economy migration. All 35 tests passed. Features tested: wallet packs (4 packs with correct values), wallet balance/transactions, coin-based subscribe/tip/unlock, subscriptions with auto_renew toggle, creator payouts (80% ratio, 500-coin minimum), creator dashboard with coin fields. Stripe checkout for coin packs working. Auto-renewal scheduler logic verified.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_coin_economy.py",
+    "/app/test_reports/pytest/pytest_results_iter5.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Coin economy correctly implemented: 1 coin = 0.10€, creator gets 80% on all transactions",
+    "Pack values correct: starter=50/0/5€, popular=200+20/20€, premium=500+75/50€, vip=1200+250/100€",
+    "Wallet debit is atomic (uses find_one_and_update with balance check)",
+    "Coin transactions logged with delta (positive for credit, negative for debit) and reason",
+    "Payout request correctly calculates EUR: coins * 0.10 * 0.80",
+    "Auto-renewal scheduler runs every 15min, renews subs expiring within 1 hour",
+    "Insufficient balance returns 402 with {error: 'insufficient_coins', needed, balance}",
+    "All endpoints properly exclude MongoDB _id from responses"
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_coin_economy.py"
+  ],
+  "success_rate": {
+    "backend": "100% (35/35 tests passed)",
+    "frontend": "N/A (backend only testing)"
+  },
+  "test_credentials": {
+    "fan": "fan@meandyou.fans / TestFan2026!",
+    "creator": "lysepress@meandyou.fans / Creator2026!",
+    "admin": "admin@meandyou.fans / Admin2026!"
+  },
+  "seed_data_creation": "Fan seeded with 1000 coins on startup if balance < 100. Creator earned coins from test subscriptions/tips.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Coin economy fully tested. All payment flows (subscribe/tip/unlock) now use coins instead of direct Stripe. Stripe only used for buying coin packs via /api/wallet/buy. Creator payout tested with 500-coin minimum. Auto-renewal scheduler logic is in place but runs every 15min so hard to test in real-time - the _run_renewals() function handles renewal/expiration correctly.",
+  "tests_executed": {
+    "wallet_packs": {
+      "test_wallet_packs_returns_4_packs": "PASSED - Returns starter/popular/premium/vip",
+      "test_wallet_packs_correct_values": "PASSED - All pack values match spec (50/0/5, 200/20/20, 500/75/50, 1200/250/100)"
+    },
+    "wallet": {
+      "test_wallet_authenticated_returns_balance": "PASSED - Returns {coin_balance, lifetime_spent, lifetime_earned, eur_equivalent}",
+      "test_wallet_fan_has_seeded_coins": "PASSED - Fan has seeded coins",
+      "test_wallet_unauthenticated_rejected": "PASSED - Returns 401"
+    },
+    "wallet_transactions": {
+      "test_wallet_transactions_returns_list": "PASSED - Returns list with delta/reason/created_at",
+      "test_wallet_transactions_unauthenticated_rejected": "PASSED - Returns 401"
+    },
+    "wallet_buy": {
+      "test_wallet_buy_popular_pack": "PASSED - Returns Stripe checkout URL + session_id",
+      "test_wallet_buy_creates_payment_transaction": "PASSED - Creates payment_transactions with type='coin_pack'",
+      "test_wallet_buy_invalid_pack_rejected": "PASSED - Returns 400",
+      "test_wallet_buy_unauthenticated_rejected": "PASSED - Returns 401"
+    },
+    "coin_subscribe": {
+      "test_subscribe_with_sufficient_balance": "PASSED - Debits coins, creates subscription with auto_renew=true, credits creator 80%",
+      "test_subscribe_insufficient_balance": "PASSED - Returns 402 with {error: 'insufficient_coins', needed, balance}",
+      "test_subscribe_creates_notifications": "PASSED - Notifications created for both parties"
+    },
+    "coin_tip": {
+      "test_tip_with_sufficient_balance": "PASSED - Debits coins, credits creator 80%, creates message + notification",
+      "test_tip_invalid_amount_zero": "PASSED - Returns 400",
+      "test_tip_invalid_amount_too_large": "PASSED - Returns 400 for >10000 coins",
+      "test_tip_insufficient_balance": "PASSED - Returns 402 with insufficient_coins"
+    },
+    "coin_unlock": {
+      "test_unlock_with_sufficient_balance": "PASSED - Debits round(unlock_price*10) coins, credits creator 80%, adds unlock record",
+      "test_unlock_free_content_rejected": "PASSED - Returns 400 for unlock_price=0",
+      "test_unlock_insufficient_balance": "PASSED - Returns 402"
+    },
+    "subscriptions": {
+      "test_list_subscriptions": "PASSED - Returns list with creator info, auto_renew flag",
+      "test_toggle_auto_renew": "PASSED - Toggles auto_renew for existing sub",
+      "test_toggle_auto_renew_no_subscription": "PASSED - Returns 404 if no sub"
+    },
+    "payouts": {
+      "test_payout_request_below_minimum": "PASSED - Returns 400 for coins < 500",
+      "test_payout_request_as_fan_rejected": "PASSED - Returns 403",
+      "test_payout_request_insufficient_balance": "PASSED - Returns 402",
+      "test_list_payouts": "PASSED - Returns creator's payout requests",
+      "test_payout_request_with_sufficient_balance": "PASSED (manual) - Creates payout_request with status='pending', eur_value = coins*0.10*0.80"
+    },
+    "creator_dashboard": {
+      "test_creator_dashboard_coin_fields": "PASSED - Returns all coin-based fields (subscribers_count, content_count, monthly_earned_coins, total_earned_coins, wallet_balance_coins, monthly_earned_eur, total_earned_eur, available_eur, payout_min_coins=500, creator)",
+      "test_creator_dashboard_as_fan_rejected": "PASSED - Returns 403"
+    },
+    "coin_transactions_log": {
+      "test_tip_creates_transaction_log": "PASSED - After debit/credit, coin_transactions entry added with correct delta and reason"
+    },
+    "backward_compatibility": {
+      "test_registration_still_works": "PASSED - Welcome notification created",
+      "test_creators_list_still_works": "PASSED - Returns 6+ seeded creators",
+      "test_messaging_still_works": "PASSED"
+    },
+    "seeded_fan_wallet": {
+      "test_seeded_fan_has_wallet": "PASSED - Fan has wallet (seeded with 1000 on startup if < 100)"
+    }
+  },
+  "mocked_apis": {
+    "stripe": "Stripe checkout for coin packs returns real checkout URL. Stripe Identity falls back to mock mode.",
+    "resend_email": "Resend test mode - domain not verified, emails attempted but may fail delivery"
+  },
+  "auto_renewal_scheduler_notes": "The _subscription_renewal_loop() runs every 15 minutes. It calls _run_renewals() which finds subscriptions with auto_renew=true expiring within 1 hour. For each: if sufficient balance → debit wallet, extend 30 days, notify both parties; if insufficient → expire subscription, notify user. Logic verified by code review - hard to test in real-time due to 15min interval."
+}

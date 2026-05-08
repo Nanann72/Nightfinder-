@@ -1,0 +1,124 @@
+{
+  "summary": "Iteration 21 - Lot 5 Features Backend Testing Complete. All 30/30 tests PASSED. Likes, Analytics, Push VAPID, Content Scheduling, External URL all working correctly.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_iteration21_lot5_features.py",
+    "/app/test_reports/pytest/pytest_results_iter21.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "BACKEND: POST /api/content/{id}/like - VERIFIED: Returns {ok:true, is_liked:true, likes_count:N}, idempotent (second POST doesn't double count)",
+    "BACKEND: DELETE /api/content/{id}/like - VERIFIED: Decrements likes_count, never goes below 0, returns {ok:true, is_liked:false, likes_count:N}",
+    "BACKEND: GET /api/feed - VERIFIED: Returns is_liked (bool) and likes_count (int) for each item",
+    "BACKEND: GET /api/creators/{id} - VERIFIED: Content array includes is_liked and likes_count fields",
+    "BACKEND: POST /api/creators/me/content - VERIFIED: Accepts scheduled_at (ISO datetime) and expires_in_hours (int)",
+    "BACKEND: Content with future scheduled_at - VERIFIED: Does NOT appear in /api/feed for non-owner fans",
+    "BACKEND: Content with expires_in_hours=24 - VERIFIED: Gets expires_at datetime set correctly",
+    "BACKEND: DELETE /api/creators/me/content/{id} - VERIFIED: Returns {ok:true}, cascade deletes unlocks/likes. Returns 403/404 for non-owners",
+    "BACKEND: GET /api/creators/me/analytics?days=7 - VERIFIED: Returns all required keys (days, active_subscribers, total_likes, totals_coins, totals_eur, earnings_timeline, subscribers_timeline, top_posts)",
+    "BACKEND: Analytics earnings_timeline - VERIFIED: Length equals days parameter, each item has {day, coins, tip_earn, unlock_earn, subscription_earn, live_ppv_earn, custom_request_earn}",
+    "BACKEND: Analytics subscribers_timeline - VERIFIED: Length equals days parameter",
+    "BACKEND: Analytics top_posts - VERIFIED: Max 5 items",
+    "BACKEND: PATCH /api/creators/me - VERIFIED: Accepts external_url field and persists it",
+    "BACKEND: GET /api/creators/{id} - VERIFIED: Returns external_url field",
+    "BACKEND: GET /api/push/vapid-public-key - VERIFIED: Returns {public_key, enabled:true}, public_key is valid base64url ~87 chars",
+    "BACKEND: POST /api/push/subscribe - VERIFIED: Returns {ok:true} with valid {endpoint, keys:{p256dh, auth}}, idempotent",
+    "BACKEND: POST /api/push/subscribe invalid - VERIFIED: Returns 400 for missing keys",
+    "BACKEND: POST /api/push/unsubscribe - VERIFIED: Returns {ok:true}, deletes specific endpoint subscription",
+    "REGRESSION: /api/media-file/{id} - VERIFIED: Endpoint exists (404 for invalid id)",
+    "REGRESSION: /api/media/{id} legacy - VERIFIED: Endpoint exists",
+    "REGRESSION: POST /api/media/wm-url - VERIFIED: Returns {path, expires_in} with signed watermark URL",
+    "REGRESSION: POST /api/wallet/cards/setup-intent - VERIFIED: Returns seti_*/cus_* (Stripe SetupIntent working)"
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iteration21_lot5_features.py"
+  ],
+  "success_rate": {
+    "backend": "100% (30/30 tests passed)",
+    "frontend": "N/A (backend-only testing requested)"
+  },
+  "test_credentials": {
+    "admin": "admin@meandyou.fans / Admin2026!",
+    "fan": "fan@meandyou.fans / TestFan2026!",
+    "test_creators_created": "test_creator_*@meandyou.fans (auto-purged on restart)"
+  },
+  "seed_data_creation": "Multiple test creator accounts created with pattern test_creator_*@meandyou.fans for content scheduling/deletion/analytics testing - will be auto-purged on backend restart",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Iteration 21 Lot 5 backend features fully tested. All 6 features working: (1) Likes with idempotent POST/DELETE, (2) Analytics with full structure, (3) Push VAPID bootstrap + subscribe/unsubscribe, (4) Content scheduling with scheduled_at + expires_in_hours, (5) Content deletion with cascade, (6) External URL bio link. All regression tests from previous iterations passing (media-file, watermark, Stripe SetupIntent).",
+  "tests_executed": {
+    "backend": {
+      "TestLikes": {
+        "test_like_content_returns_correct_structure": "PASSED - Returns {ok, is_liked:true, likes_count}",
+        "test_like_is_idempotent": "PASSED - Second POST doesn't double count",
+        "test_unlike_decrements_count": "PASSED - DELETE decrements count",
+        "test_unlike_never_goes_below_zero": "PASSED - Multiple unlikes don't go negative",
+        "test_like_nonexistent_content_returns_404": "PASSED - 404 for invalid content_id"
+      },
+      "TestFeedWithLikes": {
+        "test_feed_returns_is_liked_field": "PASSED - All feed items have is_liked bool",
+        "test_feed_returns_likes_count_field": "PASSED - All feed items have likes_count int"
+      },
+      "TestCreatorProfileWithLikes": {
+        "test_creator_profile_content_has_is_liked": "PASSED - Creator content has is_liked + likes_count"
+      },
+      "TestContentScheduling": {
+        "test_create_content_with_scheduled_at": "PASSED - Accepts ISO datetime",
+        "test_create_content_with_expires_in_hours": "PASSED - Sets expires_at correctly",
+        "test_scheduled_content_not_in_feed_for_others": "PASSED - Future scheduled content hidden from fans"
+      },
+      "TestContentDeletion": {
+        "test_delete_own_content": "PASSED - Returns {ok:true}",
+        "test_delete_others_content_forbidden": "PASSED - Returns 403/404 for non-owners"
+      },
+      "TestCreatorAnalytics": {
+        "test_analytics_returns_correct_structure": "PASSED - All required keys present",
+        "test_analytics_earnings_timeline_length": "PASSED - Length equals days param",
+        "test_analytics_subscribers_timeline_length": "PASSED - Length equals days param",
+        "test_analytics_top_posts_max_5": "PASSED - Max 5 items",
+        "test_analytics_empty_creator_returns_zeros": "PASSED - Valid structure with zeros"
+      },
+      "TestExternalUrl": {
+        "test_patch_creator_with_external_url": "PASSED - Saves external_url",
+        "test_get_creator_returns_external_url": "PASSED - Returns external_url in profile"
+      },
+      "TestPushVapid": {
+        "test_vapid_public_key_returns_structure": "PASSED - {public_key, enabled:true}",
+        "test_vapid_public_key_is_base64url": "PASSED - Valid base64url ~87 chars"
+      },
+      "TestPushSubscribe": {
+        "test_push_subscribe_valid_payload": "PASSED - Returns {ok:true}",
+        "test_push_subscribe_idempotent": "PASSED - Second subscribe doesn't fail",
+        "test_push_subscribe_invalid_payload_returns_400": "PASSED - 400 for missing keys",
+        "test_push_unsubscribe_specific_endpoint": "PASSED - Deletes specific subscription"
+      },
+      "TestRegressionMediaFile": {
+        "test_media_file_endpoint_exists": "PASSED - /api/media-file/{id} exists",
+        "test_legacy_media_endpoint_exists": "PASSED - /api/media/{id} legacy alias exists"
+      },
+      "TestRegressionWatermark": {
+        "test_watermark_url_endpoint": "PASSED - Returns signed path"
+      },
+      "TestRegressionStripe": {
+        "test_stripe_setup_intent": "PASSED - Returns seti_*/cus_*"
+      }
+    }
+  },
+  "mocked_apis": {
+    "has_mocked_apis": false,
+    "mocked_apis_list": []
+  },
+  "notes": {
+    "vapid_status": "ENABLED - VAPID keys auto-generated at startup and cached in site_config collection",
+    "stripe_mode": "LIVE (sk_live_*) - real Stripe SetupIntents created",
+    "push_notifications": "Backend infrastructure ready - actual push sending requires real browser subscription (not tested)"
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "summary": "Iteration 40 - Auth Refresh Flow Fix for Safari ITP - All 22 backend tests PASSED. Frontend auth flow verified: login stores both tokens, Bearer auth works without cookies, silent refresh flow functional.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_auth_refresh_flow.py",
+    "/app/test_reports/pytest/pytest_results_iter40.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "BACKEND: POST /api/auth/login - VERIFIED: Returns both access_token and refresh_token in response body",
+    "BACKEND: POST /api/auth/register - VERIFIED: Returns both access_token and refresh_token in response body",
+    "BACKEND: POST /api/auth/google/callback - VERIFIED: Returns both tokens (code review confirmed)",
+    "BACKEND: POST /api/auth/google/direct - VERIFIED: Returns both tokens (code review confirmed)",
+    "BACKEND: POST /api/auth/refresh - VERIFIED: Accepts token via 3 channels: cookie, body {refresh_token}, or Bearer header",
+    "BACKEND: POST /api/auth/refresh with no token - VERIFIED: Returns 401",
+    "BACKEND: POST /api/auth/refresh with invalid token - VERIFIED: Returns 401",
+    "BACKEND: POST /api/auth/refresh - VERIFIED: Sets fresh cookies AND returns tokens in body",
+    "BACKEND: get_current_user - VERIFIED: Prefers Bearer header over cookie (Bearer wins when present)",
+    "BACKEND: get_current_user with valid cookie only - VERIFIED: Returns 200 (cookie fallback works)",
+    "BACKEND: get_current_user with invalid Bearer + valid cookie - VERIFIED: Returns 401 (Bearer is preferred, cookie not fallback when Bearer present)",
+    "FRONTEND: tokenStore - VERIFIED: Has setRefresh/getRefresh methods and clear() removes both tokens",
+    "FRONTEND: login - VERIFIED: Stores both access_token and refresh_token in localStorage",
+    "FRONTEND: response interceptor - VERIFIED: Attempts silent refresh on 401 (excludes auth endpoints)",
+    "FRONTEND: refresh deduplication - VERIFIED: Single in-flight promise for concurrent 401s",
+    "FRONTEND: Safari ITP simulation - VERIFIED: After cookie clear, Bearer auth still works"
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_auth_refresh_flow.py"
+  ],
+  "success_rate": {
+    "backend": "100% (22/22 tests passed)",
+    "frontend": "100% (all auth flows verified)"
+  },
+  "test_credentials": {
+    "admin": "admin@meandyou.fans / Admin2026!",
+    "fan": "fan@meandyou.fans / TestFan2026!"
+  },
+  "seed_data_creation": "None - used existing test accounts",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Iteration 40 completed successfully. Critical post-payment auth fix verified. The Safari ITP scenario (cookies blocked after Stripe redirect) is now handled: 1) Login returns both access_token and refresh_token in body, 2) Frontend stores both in localStorage, 3) Bearer header is preferred over cookies in get_current_user, 4) /auth/refresh accepts token via cookie OR body OR Bearer header, 5) Silent refresh interceptor retries failed requests with new token. Token types: access_token has type='access' (24h), refresh_token has type='refresh' (7d).",
+  "tests_executed": {
+    "backend": {
+      "TestLoginReturnsTokens": {
+        "test_login_returns_access_token": "PASSED",
+        "test_login_returns_refresh_token": "PASSED",
+        "test_login_returns_user_object": "PASSED",
+        "test_login_sets_cookies": "PASSED"
+      },
+      "TestRegisterReturnsTokens": {
+        "test_register_returns_both_tokens": "PASSED"
+      },
+      "TestRefreshEndpoint": {
+        "test_refresh_with_no_token_returns_401": "PASSED",
+        "test_refresh_with_body_token": "PASSED",
+        "test_refresh_with_bearer_header": "PASSED",
+        "test_refresh_with_cookie": "PASSED",
+        "test_refresh_returns_fresh_cookies": "PASSED",
+        "test_refresh_with_invalid_token_returns_401": "PASSED",
+        "test_refresh_with_expired_token_returns_401": "PASSED"
+      },
+      "TestGetCurrentUserTokenPriority": {
+        "test_auth_me_with_bearer_only": "PASSED",
+        "test_auth_me_with_cookie_only": "PASSED",
+        "test_bearer_preferred_over_cookie": "PASSED",
+        "test_invalid_bearer_with_valid_cookie_returns_401": "PASSED",
+        "test_no_auth_returns_401": "PASSED"
+      },
+      "TestGoogleOAuthReturnsTokens": {
+        "test_google_config_endpoint": "PASSED"
+      },
+      "TestSilentRefreshScenario": {
+        "test_full_refresh_flow": "PASSED"
+      },
+      "TestAdminLogin": {
+        "test_admin_login_returns_both_tokens": "PASSED"
+      },
+      "TestTokenTypes": {
+        "test_access_token_type": "PASSED",
+        "test_refresh_token_type": "PASSED"
+      }
+    },
+    "frontend": {
+      "login_flow": {
+        "stores_access_token": "PASSED - length 199",
+        "stores_refresh_token": "PASSED - length 163",
+        "redirects_after_login": "PASSED - redirected to /createurs"
+      },
+      "safari_itp_simulation": {
+        "tokens_persist_after_cookie_clear": "PASSED",
+        "bearer_auth_works_without_cookies": "PASSED - still authenticated after reload",
+        "user_visible_in_header": "PASSED - Alex Fan with 545 coins visible"
+      },
+      "token_clear": {
+        "clear_removes_both_tokens": "PASSED"
+      }
+    }
+  },
+  "mocked_apis": {
+    "has_mocked_apis": false,
+    "mocked_apis_list": []
+  },
+  "notes": {
+    "safari_itp_fix": "The fix addresses Safari ITP and other privacy modes that block SameSite=None cookies after cross-site Stripe redirect. Frontend now stores refresh_token in localStorage and uses Bearer header as primary auth method.",
+    "token_priority": "get_current_user prefers Bearer header over cookie. If Bearer is present but invalid, returns 401 (cookie is not used as fallback when Bearer is present).",
+    "refresh_channels": "/auth/refresh accepts token via: 1) refresh_token cookie, 2) body {refresh_token}, 3) Authorization Bearer header (last resort with valid access token)",
+    "silent_refresh": "Frontend interceptor catches 401s (except for auth endpoints), attempts one silent refresh, and replays the original request with new token. Only clears tokens if refresh fails AND original call was /auth/me."
+  }
+}

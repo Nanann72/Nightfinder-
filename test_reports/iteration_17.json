@@ -1,0 +1,90 @@
+{
+  "summary": "Iteration 17 - Backend and Frontend testing for Stripe LIVE mode, newsletter opt-in, mobile menu reorganization, and dashboard profile edit. All 13 backend tests PASSED. All 17 regression tests from iteration 16 PASSED. Frontend tests PASSED for newsletter checkbox, mobile menu sections, and dashboard edit profile functionality.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "Dashboard EditProfileModal",
+        "issue": "Price input has step='0.99' which prevents entering values like 15.99. Should be step='0.01' to allow any decimal value.",
+        "selector": "[data-testid='edit-price']",
+        "priority": "LOW"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_iteration17_features.py",
+    "/app/backend/tests/test_iteration16_features.py",
+    "/app/test_reports/pytest/pytest_results_iter17.xml"
+  ],
+  "action_items": [
+    "Fix Dashboard.jsx price input step attribute: change step='0.99' to step='0.01' on line 303"
+  ],
+  "critical_code_review_comments": [
+    "Backend: Stripe LIVE mode working correctly - /wallet/buy and /subscribe-bundle-stripe return 'cs_live_*' session IDs",
+    "Backend: newsletter_opt_in field correctly stored in DB during registration",
+    "Backend: /payments/status/{session_id} correctly polls Stripe API and returns status",
+    "Backend: PATCH /creators/me with subscription_price works correctly",
+    "Frontend: Newsletter checkbox present with data-testid='register-newsletter-opt-in' and checked by default",
+    "Frontend: Mobile menu has 4 sections: Navigation, Mon compte, Espace Créatrice (for creators), Extras",
+    "Frontend: Dashboard edit profile modal saves correctly and shows success toast 'Profil enregistré ✓'"
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iteration17_features.py"
+  ],
+  "success_rate": {
+    "backend": "100% (13/13 new tests + 17/17 regression tests passed)",
+    "frontend": "100% (all features working, minor step attribute issue)"
+  },
+  "test_credentials": {
+    "admin": "admin@meandyou.fans / Admin2026!",
+    "fan": "fan@meandyou.fans / TestFan2026!"
+  },
+  "seed_data_creation": "Test creator 'test_creator_iter17@meandyou.fans' created and cleaned up during testing",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Stripe is now in LIVE mode - session IDs start with 'cs_live_*'. All iteration 17 features working. Minor issue: Dashboard price input has step='0.99' instead of step='0.01'. Mobile menu has 4 sections working correctly for both fans and creators.",
+  "tests_executed": {
+    "backend": {
+      "TestAuth": {
+        "test_login_admin": "PASSED",
+        "test_login_fan": "PASSED"
+      },
+      "TestNewsletterOptIn": {
+        "test_register_with_newsletter_opt_in_true": "PASSED",
+        "test_register_with_newsletter_opt_in_false": "PASSED",
+        "test_register_without_newsletter_opt_in_backward_compat": "PASSED"
+      },
+      "TestStripeLiveMode": {
+        "test_wallet_buy_returns_cs_live_session": "PASSED - session_id starts with 'cs_live_'",
+        "test_subscribe_bundle_stripe_returns_cs_live_session": "PASSED - session_id starts with 'cs_live_'"
+      },
+      "TestPaymentStatus": {
+        "test_payment_status_for_live_session": "PASSED - returns status='open', payment_status='unpaid'"
+      },
+      "TestCreatorProfileUpdate": {
+        "test_patch_creators_me_subscription_price": "PASSED"
+      },
+      "TestRegressionEndpoints": {
+        "test_wallet_packs_endpoint": "PASSED",
+        "test_creators_endpoint": "PASSED",
+        "test_auth_me_endpoint": "PASSED",
+        "test_admin_users_endpoint": "PASSED"
+      }
+    },
+    "frontend": {
+      "newsletter_checkbox": "PASSED - checkbox present with data-testid='register-newsletter-opt-in', checked by default",
+      "mobile_menu_fan": "PASSED - 3 sections: Navigation, Mon compte, Extras",
+      "mobile_menu_creator": "PASSED - 4 sections: Navigation, Mon compte, Espace Créatrice, Extras",
+      "dashboard_edit_profile": "PASSED - modal opens, saves correctly, shows success toast, modal closes"
+    }
+  },
+  "mocked_apis": {
+    "has_mocked_apis": false,
+    "mocked_apis_list": []
+  }
+}

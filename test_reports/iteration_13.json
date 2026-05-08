@@ -1,0 +1,124 @@
+{
+  "summary": "Iteration 13 - Cams Favorites, Sort Options, and Legacy Cleanup Testing Complete. All 21 backend tests passed. Frontend UI verified: 4 sort tabs (populaires/tendances/top classé/nouveaux), 4 gender tabs, favorites toggle (logged-in only), heart buttons on cam cards, CamRoom favorite button, 15s auto-refresh with LiveDot badge, logged-out redirect to /login?next=. Legacy seeded creators (lysepress, emmarose, etc.) successfully purged.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_iteration_13.py",
+    "/app/test_reports/pytest/pytest_results_iter13.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "GET /api/creators returns NO legacy handles (lysepress, emmarose, sophieluxe, claranuit, julieether, leavelvet) - purge working",
+    "GET /api/creators returns NO test_ prefixed handles - cleanup working",
+    "GET /api/cams?sort=popular|trending|top|new returns items with 'sort' field echoing the applied sort",
+    "Invalid sort value defaults to 'popular'",
+    "POST /api/cams/favorites/{username} without auth returns 401",
+    "DELETE /api/cams/favorites/{username} without auth returns 401",
+    "GET /api/cams/favorites without auth returns 401",
+    "POST /api/cams/favorites/{username} with auth returns {ok:true, is_favorite:true, count}",
+    "Favorites add is idempotent - calling twice keeps same count",
+    "GET /api/cams/favorites returns {count, items} with each item having is_favorite=true",
+    "DELETE /api/cams/favorites/{username} returns {ok:true, is_favorite:false, count}",
+    "GET /api/cams with auth includes is_favorite field on items",
+    "GET /api/cams/{username} with auth includes is_favorite field",
+    "Offline favorites included in favorites list with status='offline'",
+    "Regression: /api/live/active, /api/creators, /api/auth/me all working",
+    "Frontend /live: 4 sort tabs with data-testids cams-sort-popular/trending/top/new",
+    "Frontend /live: 4 gender tabs with data-testids cams-tab-girls/couples/trans/men",
+    "Frontend /live: LiveDot badge shows 'màj il y a Xs' and updates every second",
+    "Frontend /live: Cams auto-refresh every 15 seconds (LiveDot resets)",
+    "Frontend /live: Favorites toggle visible only when logged in, shows count",
+    "Frontend /live: Heart button on each cam card with data-testid cam-fav-{username}",
+    "Frontend /live: Clicking heart when logged out redirects to /login?next=/live",
+    "Frontend CamRoom: Favorite button toggles between 'Ajouter aux favoris' and 'En favoris'",
+    "Frontend CamRoom: Favorite state persists (API call made on toggle)"
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iteration_13.py"
+  ],
+  "success_rate": {
+    "backend": "100% (21/21 passed)",
+    "frontend": "100% (all UI flows verified)"
+  },
+  "test_credentials": {
+    "fan_account": "fan@meandyou.fans / TestFan2026!"
+  },
+  "seed_data_creation": "None - used existing fan account",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Iteration 13 features fully working: (1) 15s auto-refresh with LiveDot badge, (2) 4 sort options (popular/trending/top/new), (3) favorites CRUD with auth gates, (4) legacy seeded creators purged on startup. HLS video playback CANNOT be tested in headless Playwright due to H.264 codec limitation - this is expected. LiveKit internal streaming still in DEMO MODE.",
+  "tests_executed": {
+    "backend_api_tests": {
+      "legacy_cleanup": {
+        "test_creators_list_no_legacy_handles": "PASSED - no lysepress/emmarose/etc",
+        "test_creators_list_no_test_emails": "PASSED - no test_ prefixed handles"
+      },
+      "sort_options": {
+        "test_cams_sort_popular": "PASSED - returns sort='popular'",
+        "test_cams_sort_trending": "PASSED - returns sort='trending'",
+        "test_cams_sort_top": "PASSED - returns sort='top'",
+        "test_cams_sort_new": "PASSED - returns sort='new'",
+        "test_cams_invalid_sort_defaults_to_popular": "PASSED"
+      },
+      "favorites_auth_gates": {
+        "test_favorites_add_requires_auth": "PASSED - 401",
+        "test_favorites_delete_requires_auth": "PASSED - 401",
+        "test_favorites_list_requires_auth": "PASSED - 401"
+      },
+      "favorites_crud": {
+        "test_favorites_add_with_auth": "PASSED - {ok:true, is_favorite:true, count}",
+        "test_favorites_add_idempotent": "PASSED - count stays same",
+        "test_favorites_list_with_auth": "PASSED - {count, items}",
+        "test_favorites_delete_with_auth": "PASSED - {ok:true, is_favorite:false}"
+      },
+      "favorites_in_cams": {
+        "test_cams_list_with_auth_has_is_favorite": "PASSED",
+        "test_cams_get_single_with_auth_has_is_favorite": "PASSED"
+      },
+      "offline_favorites": {
+        "test_offline_favorite_included": "PASSED - status='offline'"
+      },
+      "regression": {
+        "test_live_active": "PASSED",
+        "test_creators_list": "PASSED",
+        "test_auth_me_with_token": "PASSED",
+        "test_auth_me_without_token": "PASSED - 401"
+      }
+    },
+    "frontend_ui_tests": {
+      "live_page_structure": {
+        "gender_tabs": "PASSED - 4 tabs with correct data-testids",
+        "sort_tabs": "PASSED - 4 tabs with correct data-testids",
+        "live_dot_badge": "PASSED - updates every second",
+        "auto_refresh": "PASSED - cams refresh every 15s",
+        "cam_cards": "PASSED - 30+ cards with LIVE badge, viewers, HD, heart button"
+      },
+      "favorites_logged_in": {
+        "favorites_toggle_visible": "PASSED - shows count",
+        "heart_button_click": "PASSED - toggles state",
+        "favorites_view": "PASSED - filters to favorites only"
+      },
+      "favorites_logged_out": {
+        "favorites_toggle_hidden": "PASSED - not visible",
+        "heart_click_redirects": "PASSED - /login?next=/live"
+      },
+      "cam_room": {
+        "back_button": "PASSED",
+        "viewers_count": "PASSED - formatted in French",
+        "favorite_button": "PASSED - toggles Ajouter/En favoris",
+        "hls_player": "PASSED - shows 'Lecteur non supporté' in headless (expected)"
+      }
+    }
+  },
+  "mocked_apis": {
+    "stripchat_integration": "REAL - integrated with Stripchat's public widget API",
+    "livekit_streaming": "DEMO MODE - LiveKit WebRTC video streaming is mocked"
+  }
+}

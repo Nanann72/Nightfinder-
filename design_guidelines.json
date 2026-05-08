@@ -1,0 +1,172 @@
+{
+  "theme_and_identity": {
+    "archetype": "5 (Jewel & Luxury) mixed with structural minimalism (Fanvue)",
+    "theme": "dark",
+    "vibe": "Premium, exclusive, clean, creator-centric, mobile-first",
+    "description": "A high-end platform for creators emphasizing frictionless navigation, large tap targets (pill buttons), and deep obsidian backgrounds broken by striking magenta accents. It must avoid the generic 'SaaS' look and feel more like an exclusive club."
+  },
+  "colors": {
+    "background": {
+      "base": "#070708",
+      "surface": "#121214",
+      "surface_elevated": "#1A1A1D"
+    },
+    "brand": {
+      "primary": "#D946EF",
+      "primary_light": "#F0ABFC",
+      "primary_dark": "#A21CAF"
+    },
+    "text": {
+      "primary": "#F9FAFB",
+      "secondary": "#A1A1AA",
+      "muted": "#71717A"
+    },
+    "utility": {
+      "border": "rgba(255, 255, 255, 0.08)",
+      "online_status": "#10B981",
+      "error": "#EF4444",
+      "glass": "rgba(255, 255, 255, 0.03)"
+    }
+  },
+  "typography": {
+    "fonts": {
+      "headings": "'Outfit', sans-serif",
+      "body": "'Manrope', sans-serif"
+    },
+    "scale": {
+      "h1": "text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight",
+      "h2": "text-2xl md:text-3xl font-semibold tracking-tight",
+      "h3": "text-xl font-medium",
+      "body": "text-base leading-relaxed text-zinc-300",
+      "small": "text-sm text-zinc-400",
+      "overline": "text-xs font-bold uppercase tracking-[0.15em] text-zinc-500"
+    }
+  },
+  "design_system_primitives": {
+    "spacing": {
+      "container_padding": "px-4 md:px-8",
+      "section_gap": "gap-12 md:gap-24",
+      "element_gap": "gap-4 md:gap-6"
+    },
+    "borders": {
+      "radius_card": "rounded-3xl",
+      "radius_button": "rounded-full",
+      "radius_input": "rounded-2xl"
+    },
+    "surfaces": {
+      "glass_header": "bg-black/60 backdrop-blur-xl border-b border-white/5",
+      "card_base": "bg-[#121214] border border-white/5",
+      "card_hover": "hover:bg-[#1A1A1D] transition-colors duration-300"
+    },
+    "components": {
+      "buttons": {
+        "primary": "rounded-full bg-fuchsia-500 hover:bg-fuchsia-400 text-white font-semibold py-4 px-8 transition-all shadow-[0_0_20px_rgba(217,70,239,0.3)] hover:shadow-[0_0_30px_rgba(217,70,239,0.5)] active:scale-95 flex items-center justify-center",
+        "secondary": "rounded-full bg-white/5 hover:bg-white/10 text-white font-medium py-4 px-8 transition-all active:scale-95 flex items-center justify-center border border-white/10",
+        "ghost": "rounded-full text-zinc-400 hover:text-white hover:bg-white/5 transition-all py-3 px-6"
+      },
+      "pills": {
+        "status": "inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-400 border border-emerald-500/20"
+      },
+      "inputs": {
+        "base": "w-full rounded-2xl bg-white/5 border border-white/10 px-5 py-4 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-fuchsia-500/50 focus:border-fuchsia-500 transition-all"
+      }
+    }
+  },
+  "page_layouts": {
+    "landing": {
+      "hero": "Massive H1, centered text. Dark abstract magenta background (image_url). Large primary CTA button. Bouncing scroll indicator.",
+      "creators_preview": "Horizontal scrolling bento grid on mobile, masonry on desktop. Focus on visual thumbnails.",
+      "features": "Alternating side-by-side text/image blocks. High padding (py-24)."
+    },
+    "creator_profile": {
+      "layout": "Single column scrollable view.",
+      "banner": "h-48 md:h-64 relative w-full overflow-hidden",
+      "avatar": "Absolute positioning, half-overlapping banner bottom edge. w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-[#070708]",
+      "header_info": "Centered or left-aligned depending on screen. Contains Name, Handle, Bio, and 'EN LIGNE' pill.",
+      "cta_sticky": "Subscribe button becomes sticky at the top/bottom of viewport on scroll.",
+      "tabs": "Sticky beneath header. Minimalist text tabs with an active indicator bar in magenta.",
+      "content_grid": "3-column grid for images. Locked content has strong backdrop-blur with a lock icon."
+    },
+    "creators_list": {
+      "layout": "Sidebar filters (Desktop) + Main Grid. Mobile uses a horizontal scroll filter pill bar.",
+      "card": "Portrait-oriented cards. bg-[#121214], rounded-3xl. Cover image fills top 70%. Bottom 30% has name and basic stats.",
+      "filters": "CategoryPicker component. Pill-based selection."
+    },
+    "live_lobby": {
+      "layout": "Grid of current live rooms.",
+      "live_card": "Image overlay with 'LIVE' bouncing red/magenta badge. Viewer count icon (Eye) bottom right."
+    },
+    "live_room": {
+      "layout": "Immersive theater mode. Video takes up 100vh on mobile, responsive box on desktop.",
+      "overlay": "Gradient overlay bottom to top (black/80 to transparent) for chat readability.",
+      "chat": "Transparent scrolling chat list. Username in brand color, text white.",
+      "tips": "TipMenuEditor / Tip Ticker overlay. Goal bar (progress bar) in magenta at top of screen."
+    },
+    "dashboard": {
+      "layout": "Desktop: Left Sidebar (w-64). Mobile: Hamburger menu to drawer.",
+      "content": "Bento grid for analytics. 1px borders, subtle glassmorphism.",
+      "forms": "Stripchat-style clean inputs. Stacked labels."
+    },
+    "wallet": {
+      "layout": "Centered container.",
+      "packs": "Grid of 3. Highlight the middle 'Popular' pack with a magenta border and glow. Other packs are standard border-white/10.",
+      "transactions": "Clean table, hidden borders on mobile, flex-stack rows instead."
+    },
+    "account": {
+      "layout": "Settings-style list view. Categorized sections (Profile, Payment, Notifications)."
+    },
+    "navigation": {
+      "top_nav": "Desktop only. Glass header. Logo left, Links center, Auth right.",
+      "bottom_nav": "Mobile only. Fixed bottom. backdrop-blur-xl bg-[#070708]/80 border-t border-white/10. Active icon glows magenta, inactive text-zinc-500."
+    }
+  },
+  "animations": {
+    "shimmer": "Background gradient translation for loading states.",
+    "fadeUp": "Standard entrance for lists and text elements.",
+    "bounceTip": "Spring animation when a tip is sent in live room.",
+    "pulseRing": "Used on the 'EN LIGNE' status pill and Live avatar rings.",
+    "slideInRight": "Used for mobile drawer/sidebar menus.",
+    "gradientFlow": "Slow moving background gradient for hero section."
+  },
+  "media_assets": {
+    "creators": [
+      {
+        "url": "https://images.unsplash.com/photo-1760595955091-fb86f40bc5be?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODF8MHwxfHNlYXJjaHwyfHxuZW9uJTIwc3R1ZGlvJTIwbGlnaHRpbmclMjBwb3J0cmFpdHxlbnwwfHx8fDE3NzgwOTYwMjN8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Female creator neon light portrait",
+        "category": "creator_avatar"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1761882717631-824133aedc0e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODF8MHwxfHNlYXJjaHwzfHxuZW9uJTIwc3R1ZGlvJTIwbGlnaHRpbmclMjBwb3J0cmFpdHxlbnwwfHx8fDE3NzgwOTYwMjN8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Male creator neon light portrait",
+        "category": "creator_avatar"
+      }
+    ],
+    "backgrounds": [
+      {
+        "url": "https://images.unsplash.com/photo-1777886289983-a93ab94c1662?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2Mzl8MHwxfHNlYXJjaHwyfHxtYWdlbnRhJTIwbmVvbiUyMGxpZ2h0JTIwZGFyayUyMGJhY2tncm91bmR8ZW58MHx8fHwxNzc4MDk2MDY2fDA&ixlib=rb-4.1.0&q=85",
+        "description": "Magenta neon streaks dark background",
+        "category": "hero_banner"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1737629918399-45526c4f9264?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2Mzl8MHwxfHNlYXJjaHwxfHxtYWdlbnRhJTIwbmVvbiUyMGxpZ2h0JTIwZGFyayUyMGJhY2tncm91bmR8ZW58MHx8fHwxNzc4MDk2MDY2fDA&ixlib=rb-4.1.0&q=85",
+        "description": "Dark background with purple shapes",
+        "category": "creator_cover"
+      }
+    ]
+  },
+  "testing_attributes": {
+    "cta": "data-testid=\"subscribe-button\", data-testid=\"explore-creators-button\"",
+    "navigation": "data-testid=\"bottom-nav-home\", data-testid=\"top-nav-login\"",
+    "cards": "data-testid=\"creator-profile-card\", data-testid=\"live-room-card\"",
+    "forms": "data-testid=\"tip-submit-button\", data-testid=\"edit-profile-save\""
+  },
+  "instructions_to_main_agent": [
+    "Ensure all buttons use the generous 'pills' padding (px-8 py-4) to match the Fanvue aesthetic.",
+    "Do not use generic 'card' components from Shadcn out of the box; strip their default borders and use the surfaces.card_base styles.",
+    "The primary brand color #D946EF must be the centerpiece of interactions; use it for active states, primary buttons, and glow effects, but avoid oversaturating the UI.",
+    "Implement the 'EN LIGNE' (Online) pill using the exact status green (#10B981) rather than a default blue.",
+    "Use 'Outfit' for all headings and 'Manrope' for body text. Verify they are imported correctly.",
+    "Strictly follow the Single-Column mobile layout. Desktop uses grid/masonry, but mobile must be a smooth continuous vertical scroll.",
+    "Media placeholders are forbidden. Use the provided Unsplash URLs."
+  ]
+}

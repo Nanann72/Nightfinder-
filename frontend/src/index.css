@@ -1,0 +1,196 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Apple-inspired dark minimal design system.
+ * - True black #000 background, austere surfaces
+ * - White-only typography hierarchy with opacity steps
+ * - Magenta is the ONLY accent (CTA, Live, indicators)
+ * - SF Pro-style tight letter-spacing on display text
+ * - Mobile-first paddings; generous breathing room on desktop
+ */
+
+@layer base {
+    :root {
+        --background: 0 0% 0%;
+        --foreground: 0 0% 100%;
+        --card: 0 0% 5%;
+        --card-foreground: 0 0% 100%;
+        --popover: 0 0% 5%;
+        --popover-foreground: 0 0% 100%;
+        --primary: 291 87% 61%;
+        --primary-foreground: 0 0% 100%;
+        --secondary: 0 0% 7%;
+        --secondary-foreground: 0 0% 100%;
+        --muted: 0 0% 7%;
+        --muted-foreground: 0 0% 65%;
+        --accent: 291 87% 61%;
+        --accent-foreground: 0 0% 100%;
+        --destructive: 0 84% 60%;
+        --destructive-foreground: 0 0% 100%;
+        --border: 0 0% 100% / 0.05;
+        --input: 0 0% 7%;
+        --ring: 291 87% 61%;
+        --radius: 1rem;
+
+        /* Apple-style tokens */
+        --bg-base:        #000000;
+        --bg-surface:     #0E0E0F;
+        --bg-elevated:    #16161A;
+        --bg-hover:       #1F1F23;
+        --color-magenta:  #D946EF;
+        --color-magenta-light: #F0ABFC;
+        --color-magenta-dark:  #A21CAF;
+        --color-text-pri: #FFFFFF;
+        --color-text-sec: rgba(255,255,255,0.65);
+        --color-text-mut: rgba(255,255,255,0.40);
+        --color-text-hint: rgba(255,255,255,0.25);
+    }
+    html, body {
+        background: var(--bg-base);
+        color: var(--color-text-pri);
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+        font-feature-settings: "cv11", "ss01";
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+    }
+    h1, h2, h3, h4 {
+        font-family: "Inter", -apple-system, "SF Pro Display", BlinkMacSystemFont, system-ui, sans-serif;
+        letter-spacing: -0.035em;
+        font-weight: 700;
+    }
+    .font-display { font-family: "Inter", -apple-system, "SF Pro Display", BlinkMacSystemFont, system-ui, sans-serif; letter-spacing: -0.035em; }
+    * { border-color: hsl(var(--border)); }
+}
+
+@layer components {
+    .container-mx { @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8; }
+
+    /* ── Buttons (Apple-style: tight, decisive) ── */
+    .btn-primary {
+        @apply inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-black;
+        @apply transition-all duration-150;
+        @apply hover:bg-white/90 active:scale-[0.97];
+        @apply disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white;
+    }
+    .btn-primary-magenta {
+        @apply inline-flex items-center justify-center gap-2 rounded-full bg-magenta px-6 py-3 text-sm font-semibold text-white;
+        @apply transition-all duration-150;
+        @apply hover:bg-magenta-300 active:scale-[0.97];
+        @apply disabled:opacity-40 disabled:cursor-not-allowed;
+    }
+    .btn-primary-lg {
+        @apply btn-primary px-8 py-4 text-base;
+    }
+    .btn-ghost {
+        @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/[0.12] bg-transparent px-6 py-3 text-sm font-medium text-white;
+        @apply transition-all duration-150 hover:bg-white/[0.06] active:scale-[0.97];
+    }
+    .btn-outline-magenta {
+        @apply inline-flex items-center justify-center gap-2 rounded-full border border-magenta/40 bg-transparent px-6 py-3 text-sm font-semibold text-magenta-200;
+        @apply transition-all duration-150 hover:border-magenta hover:bg-magenta/10 hover:text-white active:scale-[0.97];
+    }
+    .btn-icon {
+        @apply inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.1] bg-transparent text-white;
+        @apply transition-all duration-150 hover:bg-white/[0.08] active:scale-95;
+    }
+
+    /* ── Inputs (Apple-style: 14px radius, subtle border) ── */
+    .input-base {
+        @apply w-full rounded-2xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-[15px] text-white placeholder-white/30 outline-none;
+        @apply transition-all duration-150 focus:border-white/30 focus:bg-white/[0.05];
+    }
+
+    /* ── Surfaces (Apple-style: cleaner, less gradient) ── */
+    .surface-card {
+        @apply rounded-3xl border border-white/[0.06] bg-[var(--bg-surface)] p-5 sm:p-6;
+        @apply transition-colors duration-200 hover:border-white/[0.1];
+    }
+    .surface-card-tight {
+        @apply rounded-2xl border border-white/[0.06] bg-[var(--bg-surface)] p-4;
+        @apply transition-colors duration-200 hover:border-white/[0.1];
+    }
+    .glass {
+        @apply rounded-2xl border border-white/[0.08] bg-black/60 backdrop-blur-2xl;
+    }
+    .glass-header {
+        @apply bg-black/70 backdrop-blur-2xl border-b border-white/[0.05];
+    }
+
+    /* ── Pills / badges (Apple: smaller, tighter tracking) ── */
+    .pill-online {
+        @apply inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-emerald-300 border border-emerald-500/20;
+    }
+    .pill-live {
+        @apply inline-flex items-center gap-1.5 rounded-full bg-red-500/20 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-red-200 border border-red-500/30;
+    }
+    .pill-magenta {
+        @apply inline-flex items-center gap-1.5 rounded-full bg-magenta/15 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-magenta-200 border border-magenta/25;
+    }
+    .pill-neutral {
+        @apply inline-flex items-center gap-1.5 rounded-full bg-white/[0.06] px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/65 border border-white/[0.08];
+    }
+
+    /* ── Typography (Apple Display Hierarchy) ── */
+    .overline {
+        @apply text-[11px] font-semibold uppercase tracking-[0.18em] text-white/40;
+    }
+    .heading-display {
+        @apply font-display font-bold tracking-[-0.04em] text-5xl sm:text-7xl lg:text-[7.5rem] leading-[0.95];
+    }
+    .heading-1 {
+        @apply font-display font-bold tracking-[-0.035em] text-4xl sm:text-6xl leading-[1.05];
+    }
+    .heading-2 {
+        @apply font-display font-bold tracking-[-0.03em] text-3xl sm:text-5xl leading-[1.1];
+    }
+    .heading-3 {
+        @apply font-display font-semibold tracking-[-0.02em] text-2xl sm:text-3xl leading-tight;
+    }
+    .body {
+        @apply text-base leading-relaxed text-white/75;
+    }
+    .body-lg {
+        @apply text-lg leading-relaxed text-white/75;
+    }
+    .caption {
+        @apply text-sm text-white/55;
+    }
+
+    /* ── Effects (Apple: minimal) ── */
+    .gradient-text {
+        background: linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.55) 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .gradient-magenta-text {
+        background: linear-gradient(135deg, #F0ABFC 0%, #D946EF 60%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    /* ── Section spacing ── */
+    .section-y { @apply py-16 sm:py-20 lg:py-32; }
+    .section-y-lg { @apply py-20 sm:py-32 lg:py-40; }
+
+    /* ── Tappable areas (mobile-first 44pt minimum) ── */
+    .tap { @apply active:scale-[0.97] transition-transform duration-100; }
+}
+
+/* scrollbar — minimal Apple style */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
+
+::selection { background: rgba(217,70,239,0.4); color: white; }
+
+@layer base {
+    [data-debug-wrapper="true"] { display: contents !important; }
+}

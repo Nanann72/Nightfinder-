@@ -1,0 +1,111 @@
+{
+  "summary": "Iteration 16 - Backend and Frontend testing for new features: Stripe bundle subscription, admin role sync, role/profile cascade, and registration role handling. All 17 backend tests PASSED. Frontend tests PASSED for core functionality. Found i18n issue with missing translation keys on CreatorProfile page.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "CreatorProfile page",
+        "issues": [
+          "Missing i18n translation keys showing raw keys instead of translated text:",
+          "- creator.bundle_save",
+          "- creator.tip",
+          "- creator.custom_request_short",
+          "- creator.message",
+          "- creator.wallet_balance",
+          "- creator.topup",
+          "- creator.top_supporters",
+          "- creator.recent_posts",
+          "- creator.no_posts",
+          "- creator.similar",
+          "- creator.already_subscribed",
+          "- creator.subscribe_for"
+        ]
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_iteration16_features.py",
+    "/app/test_reports/pytest/pytest_results_iter16.xml"
+  ],
+  "action_items": [
+    "Add missing 'creator.*' translation keys to all locale files (en.js, fr.js, es.js, de.js, it.js, pt.js)"
+  ],
+  "critical_code_review_comments": [
+    "Backend: All new endpoints working correctly - subscribe-bundle-stripe, admin/users with has_creator_profile, admin/users/sync-roles, PATCH role cascade",
+    "Backend: Registration correctly creates/doesn't create creator profile based on is_creator flag",
+    "Backend: GET /api/creators correctly returns only users with creator profiles",
+    "Frontend: BundleModal correctly shows both 'Payer X € par carte' (Stripe) and 'Payer X coins' buttons",
+    "Frontend: Admin users page has 'Audit rôles' button that works correctly",
+    "Frontend: AgeGate modal displays in English when browser is in English",
+    "i18n: CreatorProfile.jsx uses t() for translation but keys are missing from locale files"
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iteration16_features.py"
+  ],
+  "success_rate": {
+    "backend": "100% (17/17 tests passed)",
+    "frontend": "95% (core features work, i18n keys missing)"
+  },
+  "test_credentials": {
+    "admin": "admin@meandyou.fans / Admin2026!",
+    "fan": "fan@meandyou.fans / TestFan2026!"
+  },
+  "seed_data_creation": "Test users created and cleaned up during backend tests",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Backend APIs for iteration 16 features all working. Frontend BundleModal and AdminUsers sync button working. Missing i18n keys for CreatorProfile page need to be added to locale files. AgeGate uses data-testid='age-gate-accept' for the confirm button.",
+  "tests_executed": {
+    "backend": {
+      "TestAuth": {
+        "test_login_admin": "PASSED",
+        "test_login_fan": "PASSED"
+      },
+      "TestRegisterRoles": {
+        "test_register_fan_no_creator_profile": "PASSED - Fan registration creates role=fan, no creator profile",
+        "test_register_creator_has_creator_profile": "PASSED - Creator registration creates role=creator with creator profile"
+      },
+      "TestAdminUsersEndpoint": {
+        "test_admin_users_returns_has_creator_profile": "PASSED - has_creator_profile:bool present for each user",
+        "test_admin_users_requires_admin": "PASSED - Returns 403 for non-admin"
+      },
+      "TestAdminSyncRoles": {
+        "test_sync_roles_returns_correct_structure": "PASSED - Returns {ok, removed_orphan_creator_profiles, created_missing_creator_profiles}",
+        "test_sync_roles_requires_admin": "PASSED - Returns 403 for non-admin"
+      },
+      "TestAdminPatchUserRole": {
+        "test_patch_role_to_fan_deletes_creator_profile": "PASSED - Demoting to fan deletes creator profile",
+        "test_patch_role_to_creator_creates_profile": "PASSED - Promoting to creator creates creator profile"
+      },
+      "TestCreatorsListEndpoint": {
+        "test_creators_list_excludes_fans": "PASSED - Only returns users with creator profiles"
+      },
+      "TestSubscribeBundleStripe": {
+        "test_subscribe_bundle_stripe_returns_url_and_session": "PASSED - Returns {url, session_id, amount, months}",
+        "test_subscribe_bundle_stripe_invalid_months": "PASSED - Returns 400 for invalid months",
+        "test_subscribe_bundle_stripe_requires_auth": "PASSED - Returns 401 for unauthenticated"
+      },
+      "TestExistingEndpointsRegression": {
+        "test_wallet_endpoint": "PASSED",
+        "test_subscribe_bundle_coins": "PASSED",
+        "test_auth_me": "PASSED"
+      }
+    },
+    "frontend": {
+      "age_gate_i18n": "PASSED - AgeGate modal displays in English",
+      "admin_users_page": "PASSED - Page loads with user list",
+      "admin_sync_roles_button": "PASSED - 'Audit rôles' button present and functional",
+      "bundle_modal_stripe_button": "PASSED - 'Payer X € par carte' button present",
+      "bundle_modal_coins_button": "PASSED - 'Payer X coins' button present",
+      "creator_profile_i18n": "FAILED - Translation keys showing raw instead of translated text"
+    }
+  },
+  "mocked_apis": {
+    "has_mocked_apis": false,
+    "mocked_apis_list": []
+  }
+}

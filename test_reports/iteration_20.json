@@ -1,0 +1,132 @@
+{
+  "summary": "Iteration 20 - Admin Features Testing Complete. Backend: 24/24 tests PASSED. Frontend: All admin ban/unban/coins UI elements verified working. Google OAuth fallback mode confirmed.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_iteration20_admin_features.py",
+    "/app/test_reports/pytest/pytest_results_iter20.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "BACKEND: POST /api/admin/users/{id}/ban - VERIFIED: Returns {ok:true, email}, sets banned=true, banned_at, banned_by in DB, deletes auth_sessions",
+    "BACKEND: POST /api/admin/users/{id}/unban - VERIFIED: Returns {ok:true}, sets banned=false, unsets banned_at/banned_by",
+    "BACKEND: Admin self-ban protection - VERIFIED: Returns 400 'Tu ne peux pas te bannir toi-même'",
+    "BACKEND: Banned user /auth/me - VERIFIED: Returns 403 after ban (user blocked from authenticated routes)",
+    "BACKEND: Fan cannot ban - VERIFIED: Returns 403 (require_admin dependency working)",
+    "BACKEND: POST /api/admin/users/{id}/grant-coins - VERIFIED: Returns {ok:true, granted, new_balance}, creates admin_grant notification",
+    "BACKEND: POST /api/admin/users/{id}/deduct-coins - VERIFIED: Caps deduction to current balance (deduct 100 from 50 coins → deducted:50, new_balance:0)",
+    "BACKEND: GET /api/auth/google/config - VERIFIED: Returns {direct:false, client_id:null} (fallback mode)",
+    "BACKEND: POST /api/auth/google/direct - VERIFIED: Returns 503 'Google OAuth non configuré'",
+    "BACKEND: GET /api/live/config - VERIFIED: Returns {enabled:true, url:'wss://meandyou-fans-dpv7y876.livekit.cloud'} (LIVE mode)",
+    "BACKEND: POST /api/live/start - VERIFIED: Returns {demo_mode:false, token:JWT, url:wss://...} with valid LiveKit JWT token",
+    "BACKEND: Regression iter16 - VERIFIED: /wallet/packs (4 packs), /creators, /admin/users has_creator_profile",
+    "BACKEND: Regression iter17 - VERIFIED: newsletter_opt_in registration, /wallet/buy returns cs_live_*",
+    "BACKEND: Regression iter18 - VERIFIED: /wallet/cards/setup-intent returns seti_*/cus_*, /auth/me",
+    "BACKEND: Regression iter19 - VERIFIED: Stripe Connect status/onboard working",
+    "FRONTEND: /admin/users - VERIFIED: data-testid='admin-users' container present",
+    "FRONTEND: User rows - VERIFIED: 60 user rows with data-testid='admin-user-row-{id}'",
+    "FRONTEND: Ban buttons - VERIFIED: data-testid='admin-user-ban-{id}' on each row, text 'Suspendre' or 'Réactiver'",
+    "FRONTEND: Coins buttons - VERIFIED: data-testid='admin-user-coins-{id}' on each row",
+    "FRONTEND: Coins modal - VERIFIED: data-testid='admin-coins-modal' with all elements (amount, reason, grant/deduct modes, submit)",
+    "FRONTEND: Google OAuth - VERIFIED: 'Continue with Google' button redirects to auth.emergentagent.com (fallback mode)"
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iteration20_admin_features.py"
+  ],
+  "success_rate": {
+    "backend": "100% (24/24 tests passed)",
+    "frontend": "100% (all admin UI elements verified)"
+  },
+  "test_credentials": {
+    "admin": "admin@meandyou.fans / Admin2026!",
+    "fan": "fan@meandyou.fans / TestFan2026!",
+    "test_users_created": "test_ban_*@meandyou.fans, test_creator_*@meandyou.fans (auto-purged on restart)"
+  },
+  "seed_data_creation": "Multiple test users created with pattern test_ban_*@meandyou.fans and test_creator_*@meandyou.fans for ban/coins/live testing - will be auto-purged on backend restart",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Iteration 20 admin features fully tested. Ban/unban/grant-coins/deduct-coins all working. LiveKit is now in LIVE mode (not demo) with real JWT tokens. Google OAuth is in fallback mode (redirects to auth.emergentagent.com). All regression tests from iter16-19 passing.",
+  "tests_executed": {
+    "backend": {
+      "TestAdminBanUnban": {
+        "test_admin_ban_user": "PASSED - Returns {ok:true, email}",
+        "test_admin_unban_user": "PASSED - Returns {ok:true}",
+        "test_admin_cannot_self_ban": "PASSED - Returns 400",
+        "test_banned_user_cannot_access_auth_me": "PASSED - Returns 403 after ban",
+        "test_fan_cannot_ban_user": "PASSED - Returns 403",
+        "test_ban_nonexistent_user": "PASSED - Returns 404"
+      },
+      "TestAdminGrantDeductCoins": {
+        "test_admin_grant_coins": "PASSED - Returns {ok:true, granted:250, new_balance}",
+        "test_admin_deduct_coins_full": "PASSED - Deducts correctly",
+        "test_admin_deduct_coins_capped_to_balance": "PASSED - Caps to current balance",
+        "test_fan_cannot_grant_coins": "PASSED - Returns 403",
+        "test_grant_coins_creates_notification": "PASSED - admin_grant notification created"
+      },
+      "TestGoogleOAuthConfig": {
+        "test_google_config_returns_direct_false": "PASSED - {direct:false, client_id:null}",
+        "test_google_direct_returns_503": "PASSED - 503 'Google OAuth non configuré'"
+      },
+      "TestLiveKitLiveMode": {
+        "test_live_config_enabled": "PASSED - {enabled:true, url:'wss://meandyou-fans-dpv7y876.livekit.cloud'}",
+        "test_live_start_returns_real_token": "PASSED - demo_mode:false, valid JWT token"
+      },
+      "TestRegressionIter16": {
+        "test_wallet_packs": "PASSED - 4 packs",
+        "test_creators_list": "PASSED",
+        "test_admin_users_has_creator_profile": "PASSED"
+      },
+      "TestRegressionIter17": {
+        "test_newsletter_opt_in_registration": "PASSED",
+        "test_stripe_live_mode_wallet_buy": "PASSED - cs_live_*"
+      },
+      "TestRegressionIter18": {
+        "test_wallet_cards_setup_intent": "PASSED - seti_*/cus_*",
+        "test_auth_me": "PASSED"
+      },
+      "TestRegressionIter19": {
+        "test_stripe_connect_status_fresh_creator": "PASSED - connected:false",
+        "test_stripe_connect_onboard": "PASSED - acct_* account created"
+      }
+    },
+    "frontend": {
+      "admin_users_page": {
+        "status": "PASSED",
+        "data_testid_admin_users": "Found",
+        "user_rows_count": 60,
+        "ban_buttons_count": 60,
+        "coins_buttons_count": 60
+      },
+      "coins_modal": {
+        "status": "PASSED",
+        "data_testid_admin_coins_modal": "Found",
+        "data_testid_admin_coins_amount": "Found",
+        "data_testid_admin_coins_reason": "Found",
+        "data_testid_admin_coins_mode_grant": "Found",
+        "data_testid_admin_coins_mode_deduct": "Found",
+        "data_testid_admin_coins_submit": "Found"
+      },
+      "google_oauth_fallback": {
+        "status": "PASSED",
+        "button_text": "Continue with Google",
+        "redirect_url": "https://auth.emergentagent.com/?redirect=..."
+      }
+    }
+  },
+  "mocked_apis": {
+    "has_mocked_apis": false,
+    "mocked_apis_list": []
+  },
+  "notes": {
+    "livekit_mode": "LIVE (not demo) - real JWT tokens generated with LIVEKIT_API_KEY=APIQ6CUgv7hKWFc",
+    "google_oauth_mode": "Fallback (GOOGLE_CLIENT_ID/SECRET not configured) - redirects to auth.emergentagent.com",
+    "stripe_mode": "LIVE (sk_live_*) - real Stripe sessions created"
+  }
+}

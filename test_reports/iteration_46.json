@@ -1,0 +1,134 @@
+{
+  "summary": "Iteration 46 - Fanvue-style 3-column layout refactor testing. All major features tested: PublicLayout (Navbar+Footer+BottomNav) for public routes, AuthedShell (3-column with sidebars) for authenticated routes, SmartShell hybrid pages, mobile hamburger drawer, sidebar navigation, like/bookmark interactions, and responsive right sidebar visibility.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/test_reports/iteration_46.json"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "All 3 layout systems working correctly: PublicLayout, AuthedShell, SmartShell",
+    "Left sidebar (260px) has all required nav items: Accueil, Découvrir, Live, Messages, Abonnements, Wallet, Paramètres + creator-specific (Tableau de bord, Analytics) + admin-specific (Admin)",
+    "Right SuggestedSidebar (320px) correctly shows on >=1280px and hides on smaller screens",
+    "Right sidebar correctly hidden on /messages, /admin, /dashboard, /settings routes",
+    "Mobile hamburger menu opens sidebar drawer with overlay backdrop - closes on overlay click",
+    "BottomNav correctly hidden in AuthedShell, visible in PublicLayout on mobile",
+    "'Aller en Live' button (red gradient) shows for creators, 'Acheter des coins' (magenta) shows for fans",
+    "Profile chip at bottom of sidebar shows avatar, name, coin balance, and logout button",
+    "/account correctly redirects to /settings/profile",
+    "Like button toggles to filled magenta, bookmark toggles to magenta-200 fill",
+    "Feed page has sticky tabs (Pour toi/Abonnements), stories bar with 'Ta story' add button for creators, Fanvue-style post cards"
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (frontend-only testing)",
+    "frontend": "100% - All 21 test cases passed"
+  },
+  "test_credentials": {
+    "fan_creator": "fan@meandyou.fans / TestFan2026! (converted to creator role in iter 45)",
+    "admin": "admin@meandyou.fans / Admin2026!"
+  },
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Iteration 46 completed successfully. Major Fanvue-style 3-column layout refactor verified. Routes are now grouped into 3 layouts: PublicLayout (marketing/auth/legal pages with top Navbar+Footer+BottomNav), SmartShell (hybrid pages like /createurs, /live that auto-pick layout based on auth), AuthedShell (authenticated routes with left sidebar + center outlet + right suggested sidebar). The fan@meandyou.fans account is a creator role. Console shows some 401 errors during navigation which are expected API auth transitions.",
+  "tests_executed": {
+    "public_layout_routes": {
+      "landing": "PASS - Navbar + Footer present",
+      "login": "PASS - Navbar + Footer present",
+      "register": "PASS - Navbar + Footer present",
+      "forgot_password": "PASS - Navbar + Footer present",
+      "devenir_createur": "PASS - Navbar + Footer present",
+      "legal_terms": "PASS - Navbar + Footer present"
+    },
+    "authed_shell_routes": {
+      "feed": "PASS - AuthedShell with left sidebar + right sidebar + feed container",
+      "messages": "PASS - AuthedShell with left sidebar, right sidebar hidden",
+      "wallet": "PASS - AuthedShell with left sidebar + right sidebar",
+      "dashboard": "PASS - AuthedShell with left sidebar, right sidebar hidden",
+      "settings_profile": "PASS - AuthedShell with left sidebar, right sidebar hidden"
+    },
+    "smart_shell_hybrid": {
+      "createurs_logged_out": "PASS - PublicLayout with Navbar + Footer + BottomNav",
+      "createurs_logged_in": "PASS - AuthedShell with sidebars",
+      "live_logged_out": "PASS - PublicLayout with Navbar + Footer + BottomNav",
+      "live_logged_in": "PASS - AuthedShell with sidebars"
+    },
+    "sidebar_nav_items": {
+      "accueil": "PASS - Found and navigates correctly",
+      "decouvrir": "PASS - Found and navigates correctly",
+      "live": "PASS - Found and navigates correctly",
+      "messages": "PASS - Found and navigates correctly",
+      "abonnements": "PASS - Found and navigates correctly",
+      "wallet": "PASS - Found and navigates correctly",
+      "parametres": "PASS - Found and navigates correctly",
+      "tableau_de_bord_creator": "PASS - Found for creator role",
+      "analytics_creator": "PASS - Found for creator role",
+      "admin_admin": "PASS - Found for admin role"
+    },
+    "role_specific_ctas": {
+      "aller_en_live_creator": "PASS - Red gradient button visible for creator",
+      "acheter_des_coins_fan": "PASS - Magenta button visible for non-creator (admin)",
+      "profile_chip_with_logout": "PASS - Shows avatar, name, coins, logout button"
+    },
+    "right_sidebar_visibility": {
+      "visible_on_feed": "PASS",
+      "visible_on_wallet": "PASS",
+      "hidden_on_messages": "PASS",
+      "hidden_on_dashboard": "PASS",
+      "hidden_on_settings": "PASS",
+      "hidden_on_admin": "PASS"
+    },
+    "right_sidebar_responsive": {
+      "visible_at_1280px": "PASS",
+      "hidden_at_1279px": "PASS"
+    },
+    "mobile_view": {
+      "sidebar_hidden_by_default": "PASS",
+      "hamburger_button_present": "PASS",
+      "mobile_wallet_chip": "PASS",
+      "mobile_bell_icon": "PASS",
+      "sidebar_drawer_opens": "PASS",
+      "overlay_backdrop_present": "PASS",
+      "bottomnav_hidden_in_authed_shell": "PASS",
+      "bottomnav_visible_in_public_layout": "PASS"
+    },
+    "feed_page_elements": {
+      "sticky_tabs": "PASS - Pour toi / Abonnements tabs",
+      "stories_bar": "PASS",
+      "story_add_button_creator": "PASS - 'Ta story' button for creators",
+      "post_cards": "PASS - Fanvue-style with author row, media, action bar",
+      "tab_switching": "PASS - Tabs switch filter correctly"
+    },
+    "interactions": {
+      "like_toggle": "PASS - Toggles to filled magenta",
+      "bookmark_toggle": "PASS - Toggles to magenta-200 fill",
+      "sidebar_nav_active_state": "PASS - Highlights active item"
+    },
+    "redirects": {
+      "account_to_settings_profile": "PASS"
+    },
+    "admin_layout": {
+      "admin_inside_authed_shell": "PASS",
+      "admin_nav_item_visible": "PASS",
+      "admin_internal_sidebar": "PASS"
+    },
+    "logout": {
+      "logout_from_sidebar": "PASS - Redirects to login"
+    },
+    "console_errors": {
+      "critical_errors": "NONE - Only expected 401 errors during auth transitions"
+    }
+  },
+  "mocked_apis": {
+    "has_mocked_apis": false,
+    "mocked_apis_list": []
+  }
+}
