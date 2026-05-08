@@ -61,12 +61,12 @@ export default function Verification() {
                             <ShieldCheck className="text-magenta-200" size={22} />
                         </div>
                         <div>
-                            <div className="overline">Vérification d'âge</div>
-                            <h1 className="font-display text-2xl font-bold">Confirmation de majorité</h1>
+                            <div className="overline">Stripe Identity</div>
+                            <h1 className="font-display text-2xl font-bold">Vérification de l'âge 18+</h1>
                         </div>
                     </div>
                     <p className="mt-4 text-sm leading-relaxed text-white/60">
-                        Pour accéder au contenu mature, la réglementation nous oblige à vérifier que tu es majeur(e). Une vérification rapide par notre équipe est requise une seule fois.
+                        Pour accéder au contenu adulte, la réglementation nous oblige à vérifier que tu as au moins 18 ans. L'analyse est faite par intelligence artificielle en quelques secondes via Stripe Identity.
                     </p>
 
                     <div className="mt-6 grid gap-3">
@@ -103,7 +103,7 @@ export default function Verification() {
                     {state === "mock-waiting" && (
                         <div className="mt-6 space-y-3">
                             <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-3 text-xs text-amber-200">
-                                Mode démo — La vérification d'âge n'est pas activée sur cette clé. Clique ci-dessous pour simuler une vérification réussie.
+                                Mode démo — Stripe Identity n'est pas activé sur cette clé. Clique ci-dessous pour simuler une vérification réussie.
                             </div>
                             <button data-testid="mock-complete" onClick={finishMock} className="btn-primary w-full justify-center">
                                 Simuler la vérification réussie

@@ -5187,14 +5187,14 @@ DEFAULT_SITE_CONFIG = {
     "hero_title": "me&you — le club privé",
     "hero_subtitle": "Rejoins les créatrices vérifiées sur la plateforme française la plus exclusive. Contenu premium, messagerie directe, expérience immersive.",
     "hero_cta": "Explorer les créatrices",
-    "about_text": "me&you est une plateforme française dédiée aux créatrices de contenu premium. Notre mission : offrir un espace sûr, élégant et rémunérateur à 80% pour les créatrices.",
-    "footer_tagline": "La plateforme française pour fans et créatrices premium. Contenu exclusif, messagerie privée, expérience immersive.",
+    "about_text": "me&you est une plateforme française exclusive dédiée aux créatrices adultes vérifiées. Notre mission : offrir un espace sûr, élégant et rémunérateur à 80% pour les créatrices.",
+    "footer_tagline": "La plateforme exclusive pour fans et créateurs. Contenu premium, messagerie privée, expérience immersive — uniquement pour les adultes vérifiés.",
     "categories": SFW_CATEGORY_LABELS,
     "contact_email": "contact@meandyou.fans",
     "faq": [
         {"q": "Comment fonctionne l'économie de coins ?", "a": "1 coin = 0,10 €. Tu achètes des packs pour t'abonner, donner des pourboires et déverrouiller du contenu."},
         {"q": "Comment les créatrices sont-elles rémunérées ?", "a": "Les créatrices reçoivent 80 % de la valeur en euros, versée sur leur IBAN sous 3 à 5 jours après demande de retrait."},
-        {"q": "Le contenu est-il modéré ?", "a": "Oui, toutes les créatrices sont vérifiées et le contenu est modéré par notre équipe."},
+        {"q": "Le contenu est-il modéré ?", "a": "Oui, toutes les créatrices sont vérifiées 18+ et le contenu est modéré par notre équipe."},
     ],
 }
 
@@ -6650,7 +6650,7 @@ class ChatAskIn(BaseModel):
     message: str = Field(min_length=1, max_length=2000)
 
 
-CHAT_SYSTEM_PROMPT = """Tu es Lou, l'assistante virtuelle de me&you, une plateforme française de créatrices de contenu premium.
+CHAT_SYSTEM_PROMPT = """Tu es Lou, l'assistante virtuelle de me&you, une plateforme exclusive française de créatrices de contenu 18+.
 
 Règles :
 - Réponds toujours en français, ton chaleureux et pro.

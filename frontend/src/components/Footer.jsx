@@ -8,7 +8,7 @@ export default function Footer() {
     useEffect(() => {
         api.get("/site-config").then(r => setConfig(r.data)).catch(() => {});
     }, []);
-    const tagline = config?.footer_tagline || "La plateforme française pour fans et créatrices premium. Contenu exclusif, messagerie privée, expérience immersive.";
+    const tagline = config?.footer_tagline || "La plateforme exclusive pour fans et créateurs. Contenu premium, messagerie privée, expérience immersive — uniquement pour les adultes vérifiés.";
     const contactEmail = config?.contact_email;
 
     return (
